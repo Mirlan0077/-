@@ -1,0 +1,15 @@
+{% extends 'guestbook/base.html' %}
+
+{% block content %}
+    <h2><i class="fas fa-comments"></i> Guest Book Entries</h2>
+    <ul>
+        {% for entry in entries %}
+            <li>
+                <strong><i class="fas fa-user"></i> {{ entry.author_name }}</strong> (<i class="fas fa-envelope"></i> {{ entry.author_email }}) - {{ entry.get_status_display }}
+                <p>{{ entry.entry_text }}</p>
+                <p><small><i class="fas fa-calendar-alt"></i> Created at: {{ entry.created_at }}</small></p>
+                <p><small><i class="fas fa-edit"></i> Updated at: {{ entry.updated_at }}</small></p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
