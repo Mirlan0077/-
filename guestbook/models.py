@@ -1,18 +1,21 @@
 from django.db import models
-from django.utils import timezone
+from django.urls import reverse
 
 class GuestBookEntry(models.Model):
-    STATUS_CHOICES = [
+    STATUS_CHOICES = (
         ('active', 'Активно'),
         ('blocked', 'Заблокировано'),
-    ]
+    )
 
-    author_name = models.CharField(max_length=255, verbose_name="Имя автора записи", blank=False)
-    author_email = models.EmailField(verbose_name="Почта автора записи", blank=False)
-    entry_text = models.TextField(verbose_name="Текст записи", blank=False)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Время редактирования")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active', verbose_name="Статус", blank=False)
+    author_name = models.CharField(max_length=100)
+    author_email = models.EmailField()
+    entry_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
 
     def __str__(self):
-        return f"{self.author_name} - {self.get_status_display()}"
+        return self.author_name + ' - ' + self.entry_text[:20]
+
+    def get_absolute_edit_url(self):
+        return reverse('edit_entry', args=[str(self.id)])
